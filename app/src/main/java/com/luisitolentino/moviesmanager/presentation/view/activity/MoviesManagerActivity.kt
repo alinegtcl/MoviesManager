@@ -1,8 +1,7 @@
 package com.luisitolentino.moviesmanager.presentation.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.luisitolentino.moviesmanager.R
+import androidx.appcompat.app.AppCompatActivity
 import com.luisitolentino.moviesmanager.databinding.ActivityMoviesManagerBinding
 
 class MoviesManagerActivity : AppCompatActivity() {
