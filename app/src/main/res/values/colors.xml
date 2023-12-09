@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="blue">#5990FF</color>
-    <color name="lightBlue">#82A2E3</color>
+    <color name="colorPrimary">#9768EA</color>
+    <color name="colorPrimaryVariant">#752BF6</color>
+    <color name="colorSecondary">#DDCDFA</color>
     <color name="black">#222222</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="ic_launcher_background">@color/blue</color>
+    <color name="window_color">#EEEEEE</color>
+    <color name="ic_launcher_background">@color/colorSecondary</color>
 </resources>

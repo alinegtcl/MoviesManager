@@ -4,6 +4,11 @@
     <style name="Base.Theme.MoviesManager" parent="Theme.Material3.DayNight.NoActionBar" />
 
     <style name="Theme.MoviesManager" parent="Base.Theme.MoviesManager">
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/window_color</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 </resources>
