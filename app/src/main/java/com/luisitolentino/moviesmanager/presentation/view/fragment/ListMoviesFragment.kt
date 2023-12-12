@@ -60,7 +60,11 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun setupRecycler(movies: List<Movie>) {
-        movieAdapter = MovieAdapter(::onMovieClick, ::onMenuItemClick).apply { submitList(movies) }
+        movieAdapter = MovieAdapter(
+            ::onMovieClick,
+            ::onMenuItemDeleteClick,
+            ::onMenuItemEditClick
+        ).apply { submitList(movies) }
         binding.recyclerListMovies.adapter = movieAdapter
     }
 
@@ -68,8 +72,12 @@ class ListMoviesFragment : Fragment() {
         Toast.makeText(activity, "clicou no filme ${movie.name}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun onMenuItemClick(movie: Movie) {
-        Toast.makeText(activity, "clicou menu do ${movie.name}", Toast.LENGTH_SHORT).show()
+    private fun onMenuItemDeleteClick(movie: Movie) {
+        Toast.makeText(activity, "Delete ${movie.name}", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onMenuItemEditClick(movie: Movie) {
+        Toast.makeText(activity, "Edit ${movie.name}", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {

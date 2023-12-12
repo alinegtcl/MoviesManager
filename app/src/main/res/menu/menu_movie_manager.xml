@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/itemMenuMovieEdit"
+        android:layout_margin="8dp"
+        android:icon="@drawable/ic_movie_edit"
+        android:title="@string/label_edit_movie" />
+    <item
+        android:id="@+id/itemMenuMovieDelete"
+        android:layout_margin="8dp"
+        android:icon="@drawable/ic_delete_movie"
+        android:title="@string/label_remove_movie" />
+</menu>

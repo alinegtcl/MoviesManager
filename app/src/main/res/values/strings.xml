@@ -11,4 +11,6 @@
     <string name="label_watched">Já assistiu?</string>
     <string name="label_movie_score">Nota</string>
     <string name="label_save">Salvar</string>
+    <string name="label_edit_movie">Editar filme</string>
+    <string name="label_remove_movie">Remover filme</string>
 </resources>
