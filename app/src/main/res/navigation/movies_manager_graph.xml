@@ -18,5 +18,11 @@
         android:id="@+id/movieManagerFragment"
         android:name="com.luisitolentino.moviesmanager.presentation.view.fragment.MovieManagerFragment"
         android:label="fragment_movie_manager"
-        tools:layout="@layout/fragment_movie_manager" />
+        tools:layout="@layout/fragment_movie_manager">
+        <argument
+            android:name="movie"
+            android:defaultValue="@null"
+            app:argType="com.luisitolentino.moviesmanager.domain.model.Movie"
+            app:nullable="true" />
+    </fragment>
 </navigation>

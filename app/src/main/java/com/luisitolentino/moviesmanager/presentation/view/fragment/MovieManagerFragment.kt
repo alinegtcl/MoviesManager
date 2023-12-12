@@ -7,13 +7,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.luisitolentino.moviesmanager.databinding.FragmentMovieManagerBinding
 import com.luisitolentino.moviesmanager.domain.model.Movie
 import com.luisitolentino.moviesmanager.domain.model.MovieGenre
 import com.luisitolentino.moviesmanager.presentation.viewmodel.MoviesManagerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import kotlin.properties.Delegates
 
 class MovieManagerFragment : Fragment() {
 
@@ -22,7 +23,12 @@ class MovieManagerFragment : Fragment() {
     private var _binding: FragmentMovieManagerBinding? = null
     private val binding get() = _binding!!
 
+    private val args: MovieManagerFragmentArgs by navArgs()
+
     private lateinit var movie: Movie
+
+    private var isEdit by Delegates.notNull<Boolean>()
+
     private val movieGenreList = listOf<MovieGenre>(
         MovieGenre(1L, "Comédia"),
         MovieGenre(2L, "Drama"),
@@ -41,8 +47,31 @@ class MovieManagerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupSpinnerMovieGenre()
-        setupAddMovie()
+        if (args.movie == null) {
+            setupAddView()
+        } else {
+            setupEditView(args.movie!!)
+        }
+        setupSaveMovieButton()
     }
+
+    private fun setupAddView() {
+        isEdit = false
+    }
+
+    private fun setupEditView(movie: Movie) {
+        isEdit = true
+        binding.apply {
+            editTextMovieName.setText(movie.name)
+            editTextReleaseYear.setText(movie.releaseYear)
+            editTextMovieStudio.setText(movie.studio)
+            editTextMovieDuration.setText(movie.duration.toString())
+            checkMovieWatched.isChecked = movie.flagMovieWatched
+            editTextMovieScore.setText(movie.score.toString())
+            spinnerMovieGenre.setSelection(movieGenreList.indexOf(movie.movieGenre))
+        }
+    }
+
 
     private fun setupSpinnerMovieGenre() {
         val adapter = ArrayAdapter(
@@ -75,8 +104,8 @@ class MovieManagerFragment : Fragment() {
         }
     }
 
-    private fun setupAddMovie() {
-        binding.buttonAddMovie.setOnClickListener {
+    private fun setupSaveMovieButton() {
+        binding.buttonSaveMovie.setOnClickListener {
             binding.apply {
                 movie = Movie(
                     editTextMovieName.text.toString(),
@@ -85,10 +114,10 @@ class MovieManagerFragment : Fragment() {
                     editTextMovieDuration.text.toString().toInt(),
                     checkMovieWatched.isChecked,
                     genreSelected!!,
-                    editTextMovieScore.text.toString().toInt()
+                    editTextMovieScore.text.toString().toInt(),
+                    args.movie?.id ?: 0L
                 )
             }
-            Toast.makeText(requireContext(), "$genreSelected", Toast.LENGTH_SHORT).show()
         }
     }
 

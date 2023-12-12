@@ -77,7 +77,9 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun onMenuItemEditClick(movie: Movie) {
-        Toast.makeText(activity, "Edit ${movie.name}", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(
+            ListMoviesFragmentDirections.goToMovieManagerFragment(movie)
+        )
     }
 
     override fun onDestroyView() {
