@@ -9,5 +9,14 @@
         android:id="@+id/listMoviesFragment"
         android:name="com.luisitolentino.moviesmanager.presentation.view.fragment.ListMoviesFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_list_movies" />
+        tools:layout="@layout/fragment_list_movies">
+        <action
+            android:id="@+id/go_to_movieManagerFragment"
+            app:destination="@id/movieManagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieManagerFragment"
+        android:name="com.luisitolentino.moviesmanager.presentation.view.fragment.MovieManagerFragment"
+        android:label="fragment_movie_manager"
+        tools:layout="@layout/fragment_movie_manager" />
 </navigation>
