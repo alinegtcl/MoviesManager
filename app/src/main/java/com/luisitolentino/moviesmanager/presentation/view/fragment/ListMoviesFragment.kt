@@ -93,7 +93,9 @@ class ListMoviesFragment : Fragment() {
     }
 
     private fun onMovieClick(movie: Movie) {
-        Toast.makeText(activity, "clicou no filme ${movie.name}", Toast.LENGTH_SHORT).show()
+        findNavController().navigate(
+            ListMoviesFragmentDirections.goToDetailMovieFragment(movie)
+        )
     }
 
     private fun onMenuItemDeleteClick(movie: Movie, position: Int) {
