@@ -66,4 +66,21 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
             )
         }
     }
+
+    fun delete(movie: Movie) {
+        viewModelScope.launch {
+            _stateList.value = MovieState.ShowLoading
+            val response = useCase.delete(movie)
+            _stateList.value = MovieState.HideLoading
+            response.flow(
+                {
+                    _stateList.value = MovieState.DeleteSuccess
+
+                },
+                {
+                    _stateList.value = MovieState.Failure(it)
+                }
+            )
+        }
+    }
 }

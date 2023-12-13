@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.luisitolentino.moviesmanager.R
 import com.luisitolentino.moviesmanager.databinding.FragmentListMoviesBinding
 import com.luisitolentino.moviesmanager.domain.model.Movie
 import com.luisitolentino.moviesmanager.presentation.view.adpter.MovieAdapter
@@ -23,6 +24,8 @@ class ListMoviesFragment : Fragment() {
     private val viewModel: MoviesManagerViewModel by viewModel()
 
     private lateinit var movieAdapter: MovieAdapter
+
+    private var positionDeleted: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -47,13 +50,34 @@ class ListMoviesFragment : Fragment() {
 
     private fun setupViewmodel() {
         lifecycleScope.launch {
-            viewModel.stateList.collect {
-                when (it) {
-                    MovieState.EmptyState -> binding.textEmptyState.visibility = View.VISIBLE
-                    is MovieState.Failure -> {}
+            viewModel.stateList.collect { state ->
+                when (state) {
+                    MovieState.EmptyState -> {
+                        binding.recyclerListMovies.visibility = View.GONE
+                        binding.textEmptyState.visibility = View.VISIBLE
+                    }
+
+                    is MovieState.Failure -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "$state.errorMessage", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
                     MovieState.HideLoading -> binding.loadingListMovie.visibility = View.GONE
                     MovieState.ShowLoading -> binding.loadingListMovie.visibility = View.VISIBLE
-                    is MovieState.SearchAllSuccess -> setupRecycler(it.movies)
+                    is MovieState.SearchAllSuccess -> {
+                        binding.recyclerListMovies.visibility = View.VISIBLE
+                        setupRecycler(state.movies)
+                    }
+
+                    MovieState.DeleteSuccess -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.label_movie_deleted), Toast.LENGTH_SHORT
+                        ).show()
+                        viewModel.getAllMoviesByName()
+                    }
                 }
             }
         }
@@ -72,8 +96,9 @@ class ListMoviesFragment : Fragment() {
         Toast.makeText(activity, "clicou no filme ${movie.name}", Toast.LENGTH_SHORT).show()
     }
 
-    private fun onMenuItemDeleteClick(movie: Movie) {
-        Toast.makeText(activity, "Delete ${movie.name}", Toast.LENGTH_SHORT).show()
+    private fun onMenuItemDeleteClick(movie: Movie, position: Int) {
+        positionDeleted = position
+        viewModel.delete(movie)
     }
 
     private fun onMenuItemEditClick(movie: Movie) {

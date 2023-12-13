@@ -15,4 +15,5 @@
     <string name="label_remove_movie">Remover filme</string>
     <string name="label_movie_added">Filme adicionado!</string>
     <string name="label_movie_changed">Filme alterado!</string>
+    <string name="label_movie_deleted">Filme removido!</string>
 </resources>

@@ -47,6 +47,15 @@ class MovieManagerRepositoryImpl(private val moviesDao: MoviesDao) : MovieManage
         }
     }
 
+    override suspend fun delete(movie: Movie): MMResult<Unit, String> {
+        return try {
+            moviesDao.delete(toMovieEntity(movie))
+            MMResult.Success(Unit)
+        } catch (exception: Exception) {
+            MMResult.Error(exception.message.toString())
+        }
+    }
+
     private fun toMovieEntity(movie: Movie): MovieEntity {
         return MovieEntity(
             movie.id,

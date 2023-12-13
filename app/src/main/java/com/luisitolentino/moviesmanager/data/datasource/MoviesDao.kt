@@ -1,6 +1,7 @@
 package com.luisitolentino.moviesmanager.data.datasource
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,4 +18,7 @@ interface MoviesDao {
 
     @Update
     suspend fun update(movie: MovieEntity)
+
+    @Delete
+    suspend fun delete(movie: MovieEntity)
 }

@@ -11,7 +11,7 @@ import com.luisitolentino.moviesmanager.domain.model.Movie
 
 class MovieAdapter(
     private val onMovieClickListener: (Movie) -> Unit,
-    private val onMenuItemDeleteClick: (Movie) -> Unit,
+    private val onMenuItemDeleteClick: (Movie, Int) -> Unit,
     private val onMenuItemEditClick: (Movie) -> Unit
 ) : androidx.recyclerview.widget.ListAdapter<Movie, MovieAdapter.MovieViewHolder>(differCallback) {
 
@@ -26,30 +26,30 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position)
     }
 
     inner class MovieViewHolder(binding: TileMovieBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie: Movie) {
+        fun bind(movie: Movie, position: Int) {
             binding.apply {
                 textMovieName.text = movie.name
                 textMovieGenre.text = movie.movieGenre
                 textMovieScore.text =
                     if (movie.score!! < 0) "Ainda não avaliado" else "Nota ${movie.score}"
                 imageMovieEditMenu.setOnClickListener {
-                    showPopUpMenu(binding, movie)
+                    showPopUpMenu(binding, movie, position)
                 }
                 root.setOnClickListener { onMovieClickListener(movie) }
             }
         }
 
-        private fun showPopUpMenu(movieTile: TileMovieBinding, movie: Movie) {
+        private fun showPopUpMenu(movieTile: TileMovieBinding, movie: Movie, position: Int) {
             val popupMenu = PopupMenu(movieTile.root.context, movieTile.imageMovieEditMenu)
             popupMenu.inflate(R.menu.menu_movie_manager)
             popupMenu.setOnMenuItemClickListener {
                 when (it.itemId) {
                     R.id.itemMenuMovieEdit -> onMenuItemEditClick(movie)
-                    R.id.itemMenuMovieDelete -> onMenuItemDeleteClick(movie)
+                    R.id.itemMenuMovieDelete -> onMenuItemDeleteClick(movie, position)
                 }
                 false
             }
