@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.luisitolentino.moviesmanager.R
 import com.luisitolentino.moviesmanager.databinding.FragmentDetailMovieBinding
 
 class DetailMovieFragment : Fragment() {
@@ -35,12 +36,19 @@ class DetailMovieFragment : Fragment() {
             textMovieGenreLabel.text = args.selectedMovie.movieGenre
             textReleaseYear.text = args.selectedMovie.releaseYear
             textMovieStudio.text = args.selectedMovie.studio
-            textMovieDuration.text = args.selectedMovie.duration.toString()
+            if (args.selectedMovie.duration > 0)
+                textMovieDuration.text =
+                    getString(R.string.label_x_minutes, args.selectedMovie.duration.toString())
+            else textMovieDuration.text = getString(R.string.label_uninformed)
             textMovieWatched.text =
-                if (args.selectedMovie.flagMovieWatched) "Assistido" else "Não assistido"
+                if (args.selectedMovie.flagMovieWatched) getString(R.string.label_movie_watched)
+                else getString(R.string.label_movie_not_watched)
             val score = args.selectedMovie.score ?: -1
             textMovieScore.text =
-                if (score < 0) "Ainda não avaliado" else "Nota ${args.selectedMovie.score}"
+                if (score < 0) getString(R.string.label_not_yet_rated) else getString(
+                    R.string.label_detail_score,
+                    args.selectedMovie.score.toString()
+                )
         }
     }
 

@@ -82,8 +82,11 @@ class MovieManagerFragment : Fragment() {
             editTextMovieName.isEnabled = true
             editTextReleaseYear.setText(releaseYear)
             editTextMovieStudio.setText(studio)
-            editTextMovieDuration.setText(duration.toString())
+            if (duration > 0)
+                editTextMovieDuration.setText(duration.toString())
+            else editTextMovieDuration.setText(EMPTY_STRING)
             checkMovieWatched.isChecked = false
+            editTextMovieScore.visibility = View.GONE
             if (score < 0) editTextMovieScore.setText(EMPTY_STRING)
             else editTextMovieScore.setText(score.toString())
             spinnerMovieGenre.setSelection(0)
@@ -98,10 +101,17 @@ class MovieManagerFragment : Fragment() {
             editTextMovieName.isEnabled = false
             editTextReleaseYear.setText(movie.releaseYear)
             editTextMovieStudio.setText(movie.studio)
-            editTextMovieDuration.setText(movie.duration.toString())
+            if (movie.duration > 0)
+                editTextMovieDuration.setText(movie.duration.toString())
+            else editTextMovieDuration.setText(EMPTY_STRING)
             checkMovieWatched.isChecked = movie.flagMovieWatched
             if (movie.score!! < 0) editTextMovieScore.setText(EMPTY_STRING)
             else editTextMovieScore.setText(movie.score.toString())
+            if (movie.flagMovieWatched) {
+                editTextMovieScore.visibility = View.VISIBLE
+            } else {
+                editTextMovieScore.visibility = View.GONE
+            }
             spinnerMovieGenre.setSelection(movieGenreList.indexOf(movie.movieGenre))
         }
     }
@@ -163,6 +173,8 @@ class MovieManagerFragment : Fragment() {
         binding.editTextMovieName.addTextChangedListener {
             if (binding.editTextMovieName.text.toString() != EMPTY_STRING) {
                 name = binding.editTextMovieName.text.toString()
+            } else {
+                binding.editTextMovieName.error = "Campo obrigatório"
             }
             validateToggleButton()
         }
@@ -175,10 +187,10 @@ class MovieManagerFragment : Fragment() {
             validateToggleButton()
         }
         binding.editTextMovieDuration.addTextChangedListener {
-            try {
-                duration = binding.editTextMovieDuration.text.toString().toInt()
-            } catch (e: Exception) {
-
+            duration = if (binding.editTextMovieDuration.text.toString() != EMPTY_STRING) {
+                binding.editTextMovieDuration.text.toString().toInt()
+            } else {
+                0
             }
             validateToggleButton()
         }
@@ -194,12 +206,13 @@ class MovieManagerFragment : Fragment() {
 
         }
         binding.editTextMovieScore.addTextChangedListener {
-            try {
+            if (binding.editTextMovieScore.text.toString() != EMPTY_STRING) {
                 score = binding.editTextMovieScore.text.toString().toInt()
                 if (score !in 0..10) {
+                    binding.editTextMovieScore.error = "A nota deve ser entre 0 e 10."
                 }
-            } catch (e: Exception) {
-                score = -1
+            } else {
+                binding.editTextMovieScore.error = "Campo obrigatório"
             }
             validateToggleButton()
         }
@@ -207,9 +220,11 @@ class MovieManagerFragment : Fragment() {
 
     private fun validateToggleButton() {
         val isValid =
-            binding.editTextMovieName.text.toString() != EMPTY_STRING && (!binding.checkMovieWatched.isChecked || (binding.checkMovieWatched.isChecked && score in 0..10))
+            binding.editTextMovieName.text.toString() != EMPTY_STRING
+                    &&
+                    (!binding.checkMovieWatched.isChecked ||
+                            (binding.checkMovieWatched.isChecked && score in 0..10))
         binding.buttonSaveMovie.isEnabled = isValid
-
     }
 
     private fun setupViewModel() {
