@@ -7,12 +7,18 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.luisitolentino.moviesmanager.R
 import com.luisitolentino.moviesmanager.databinding.FragmentMovieManagerBinding
 import com.luisitolentino.moviesmanager.domain.model.Movie
-import com.luisitolentino.moviesmanager.domain.model.MovieGenre
+import com.luisitolentino.moviesmanager.presentation.viewmodel.MovieManagerState
 import com.luisitolentino.moviesmanager.presentation.viewmodel.MoviesManagerViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.properties.Delegates
 
@@ -29,12 +35,14 @@ class MovieManagerFragment : Fragment() {
 
     private var isEdit by Delegates.notNull<Boolean>()
 
-    private val movieGenreList = listOf<MovieGenre>(
-        MovieGenre(1L, "Comédia"),
-        MovieGenre(2L, "Drama"),
-        MovieGenre(3L, "Terror")
+    private val movieGenreList = listOf(
+        "Comédia",
+        "Drama",
+        "Terror",
+        "Romance",
+        "Aventura"
     )
-    private var genreSelected: MovieGenre? = null
+    private var genreSelected: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,14 +61,17 @@ class MovieManagerFragment : Fragment() {
             setupEditView(args.movie!!)
         }
         setupSaveMovieButton()
+        setupViewModel()
     }
 
     private fun setupAddView() {
         isEdit = false
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "Adicionar filme"
     }
 
     private fun setupEditView(movie: Movie) {
         isEdit = true
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "Alterar filme"
         binding.apply {
             editTextMovieName.setText(movie.name)
             editTextReleaseYear.setText(movie.releaseYear)
@@ -72,17 +83,16 @@ class MovieManagerFragment : Fragment() {
         }
     }
 
-
     private fun setupSpinnerMovieGenre() {
         val adapter = ArrayAdapter(
             requireContext(),
             org.koin.android.R.layout.support_simple_spinner_dropdown_item,
-            movieGenreList.map { it.description }
+            movieGenreList
         )
         binding.spinnerMovieGenre.adapter = adapter
         binding.spinnerMovieGenre.itemSelected { genre ->
             movieGenreList.forEach {
-                if (it.description == genre)
+                if (it == genre)
                     genreSelected = it
             }
         }
@@ -117,6 +127,43 @@ class MovieManagerFragment : Fragment() {
                     editTextMovieScore.text.toString().toInt(),
                     args.movie?.id ?: 0L
                 )
+            }
+            if (isEdit) {
+                //viewModel.update(movie)
+            } else {
+                viewModel.insert(movie)
+            }
+        }
+    }
+
+
+    private fun setupViewModel() {
+        lifecycleScope.launch {
+            viewModel.stateManagement.collect { state ->
+                when (state) {
+                    is MovieManagerState.Failure -> {
+                        Toast.makeText(
+                            requireContext(),
+                            "$state.errorMessage", Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    MovieManagerState.HideLoading -> binding.loadingManagerMovie.visibility =
+                        View.GONE
+
+                    MovieManagerState.InsertSuccess -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.label_movie_added), Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().popBackStack()
+                    }
+
+                    MovieManagerState.ShowLoading -> binding.loadingManagerMovie.visibility =
+                        View.VISIBLE
+
+                    MovieManagerState.UpdateSuccess -> TODO()
+                }
             }
         }
     }

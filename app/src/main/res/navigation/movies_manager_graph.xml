@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/movieManagerFragment"
         android:name="com.luisitolentino.moviesmanager.presentation.view.fragment.MovieManagerFragment"
-        android:label="fragment_movie_manager"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_movie_manager">
         <argument
             android:name="movie"

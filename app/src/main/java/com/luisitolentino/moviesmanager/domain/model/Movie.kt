@@ -10,7 +10,7 @@ data class Movie(
     val studio: String,
     val duration: Int,
     val flagMovieWatched: Boolean,
-    val movieGenre: MovieGenre,
+    val movieGenre: String,
     val score: Int? = -1,
     var id: Long = 0L
 ) : Parcelable

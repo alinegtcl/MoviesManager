@@ -33,7 +33,7 @@ class MovieAdapter(
         fun bind(movie: Movie) {
             binding.apply {
                 textMovieName.text = movie.name
-                textMovieGenre.text = movie.movieGenre.description
+                textMovieGenre.text = movie.movieGenre
                 textMovieScore.text =
                     if (movie.score!! < 0) "Ainda não avaliado" else "Nota ${movie.score}"
                 imageMovieEditMenu.setOnClickListener {
