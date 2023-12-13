@@ -14,4 +14,5 @@
     <string name="label_edit_movie">Editar filme</string>
     <string name="label_remove_movie">Remover filme</string>
     <string name="label_movie_added">Filme adicionado!</string>
+    <string name="label_movie_changed">Filme alterado!</string>
 </resources>

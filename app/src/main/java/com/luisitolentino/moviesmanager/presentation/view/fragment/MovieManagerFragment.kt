@@ -129,7 +129,7 @@ class MovieManagerFragment : Fragment() {
                 )
             }
             if (isEdit) {
-                //viewModel.update(movie)
+                viewModel.update(movie)
             } else {
                 viewModel.insert(movie)
             }
@@ -162,7 +162,13 @@ class MovieManagerFragment : Fragment() {
                     MovieManagerState.ShowLoading -> binding.loadingManagerMovie.visibility =
                         View.VISIBLE
 
-                    MovieManagerState.UpdateSuccess -> TODO()
+                    MovieManagerState.UpdateSuccess -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.label_movie_changed), Toast.LENGTH_SHORT
+                        ).show()
+                        findNavController().popBackStack()
+                    }
                 }
             }
         }

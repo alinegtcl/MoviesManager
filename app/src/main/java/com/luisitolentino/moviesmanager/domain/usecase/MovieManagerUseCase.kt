@@ -8,4 +8,5 @@ interface MovieManagerUseCase {
 
     suspend fun getAllMoviesByName(): MMResult<List<Movie>, String>
 
+    suspend fun update(movie: Movie): MMResult<Unit, String>
 }

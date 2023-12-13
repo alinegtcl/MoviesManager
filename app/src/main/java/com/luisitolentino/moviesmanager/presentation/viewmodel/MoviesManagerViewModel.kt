@@ -5,11 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.luisitolentino.moviesmanager.domain.model.Movie
 import com.luisitolentino.moviesmanager.domain.usecase.MovieManagerUseCase
 import com.luisitolentino.moviesmanager.domain.utils.flow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewModel() {
 
@@ -23,9 +21,6 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
     fun getAllMoviesByName() {
         viewModelScope.launch {
             _stateList.value = MovieState.ShowLoading
-            withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
-            }
             val response = useCase.getAllMoviesByName()
             _stateList.value = MovieState.HideLoading
             response.flow(
@@ -45,9 +40,6 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
     fun insert(movie: Movie) {
         viewModelScope.launch {
             _stateManagement.value = MovieManagerState.ShowLoading
-            withContext(Dispatchers.IO) {
-                Thread.sleep(1000)
-            }
             val response = useCase.insert(movie)
             _stateManagement.value = MovieManagerState.HideLoading
             response.flow(
@@ -57,7 +49,21 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
                     _stateManagement.value = MovieManagerState.Failure(it)
                 }
             )
+        }
+    }
 
+    fun update(movie: Movie) {
+        viewModelScope.launch {
+            _stateManagement.value = MovieManagerState.ShowLoading
+            val response = useCase.update(movie)
+            _stateManagement.value = MovieManagerState.HideLoading
+            response.flow(
+                {
+                    _stateManagement.value = MovieManagerState.UpdateSuccess
+                }, {
+                    _stateManagement.value = MovieManagerState.Failure(it)
+                }
+            )
         }
     }
 }
