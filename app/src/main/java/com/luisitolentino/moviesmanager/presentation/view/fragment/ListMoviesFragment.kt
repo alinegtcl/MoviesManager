@@ -32,7 +32,7 @@ class ListMoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getAllMovies()
+        viewModel.getAllMoviesByName()
         setupViewmodel()
         setupAddNewMovieButton()
     }
@@ -80,6 +80,11 @@ class ListMoviesFragment : Fragment() {
         findNavController().navigate(
             ListMoviesFragmentDirections.goToMovieManagerFragment(movie)
         )
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllMoviesByName()
     }
 
     override fun onDestroyView() {

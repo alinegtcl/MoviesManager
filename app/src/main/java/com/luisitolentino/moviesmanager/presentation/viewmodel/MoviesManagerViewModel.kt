@@ -20,17 +20,25 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
         MutableStateFlow<MovieManagerState>(MovieManagerState.HideLoading)
     val stateManagement = _stateManagement.asStateFlow()
 
-    fun getAllMovies() {
+    fun getAllMoviesByName() {
         viewModelScope.launch {
             _stateList.value = MovieState.ShowLoading
             withContext(Dispatchers.IO) {
                 Thread.sleep(1000)
             }
+            val response = useCase.getAllMoviesByName()
             _stateList.value = MovieState.HideLoading
-            _stateList.value = MovieState.SearchAllSuccess(
-                listOf(Movie("Sherlock", "2020", "warner", 120, true, "Comedia", 9))
+            response.flow(
+                { movies ->
+                    if (movies.isNotEmpty())
+                        _stateList.value = MovieState.SearchAllSuccess(movies)
+                    else
+                        _stateList.value = MovieState.EmptyState
+                },
+                {
+                    _stateList.value = MovieState.Failure(it)
+                }
             )
-            //_stateList.value = MovieState.EmptyState
         }
     }
 
