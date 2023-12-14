@@ -15,6 +15,8 @@ interface MoviesDao {
 
     @Query("SELECT * FROM movieentity ORDER BY name")
     suspend fun getAllMoviesByName(): List<MovieEntity>?
+    @Query("SELECT * FROM movieentity ORDER BY score DESC")
+    suspend fun getAllMoviesByScore(): List<MovieEntity>?
 
     @Update
     suspend fun update(movie: MovieEntity)

@@ -16,8 +16,8 @@ class MovieManagerRepositoryImpl(private val moviesDao: MoviesDao) : MovieManage
         }
     }
 
-    override suspend fun getAllMoviesByName(): MMResult<List<Movie>, String> {
-        val response = moviesDao.getAllMoviesByName()
+    override suspend fun getAllMoviesByName(orderByName: Boolean): MMResult<List<Movie>, String> {
+        val response = if(orderByName) moviesDao.getAllMoviesByName() else moviesDao.getAllMoviesByScore()
         return if (response != null)
             MMResult.Success(toDomain(response))
         else MMResult.Error("Você não tem livros cadastrados")

@@ -37,14 +37,20 @@ class ListMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getAllMoviesByName()
         setupViewmodel()
-        setupAddNewMovieButton()
+        setupButtons()
     }
 
-    private fun setupAddNewMovieButton() {
+    private fun setupButtons() {
         binding.buttonAddNewMovie.setOnClickListener {
             findNavController().navigate(
                 ListMoviesFragmentDirections.goToMovieManagerFragment()
             )
+        }
+        binding.buttonOrderByName.setOnClickListener {
+            viewModel.getAllMoviesByName()
+        }
+        binding.buttonOrderByScore.setOnClickListener {
+            viewModel.getAllMoviesByName(orderByName = false)
         }
     }
 
@@ -54,6 +60,9 @@ class ListMoviesFragment : Fragment() {
                 when (state) {
                     MovieState.EmptyState -> {
                         binding.recyclerListMovies.visibility = View.GONE
+                        binding.buttonOrderByName.visibility = View.GONE
+                        binding.buttonOrderByScore.visibility = View.GONE
+                        binding.textOrderByLabel.visibility = View.GONE
                         binding.textEmptyState.visibility = View.VISIBLE
                     }
 
@@ -68,6 +77,9 @@ class ListMoviesFragment : Fragment() {
                     MovieState.ShowLoading -> binding.loadingListMovie.visibility = View.VISIBLE
                     is MovieState.SearchAllSuccess -> {
                         binding.recyclerListMovies.visibility = View.VISIBLE
+                        binding.buttonOrderByName.visibility = View.VISIBLE
+                        binding.buttonOrderByScore.visibility = View.VISIBLE
+                        binding.textOrderByLabel.visibility = View.VISIBLE
                         setupRecycler(state.movies)
                     }
 

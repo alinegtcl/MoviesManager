@@ -18,10 +18,10 @@ class MoviesManagerViewModel(private val useCase: MovieManagerUseCase) : ViewMod
         MutableStateFlow<MovieManagerState>(MovieManagerState.HideLoading)
     val stateManagement = _stateManagement.asStateFlow()
 
-    fun getAllMoviesByName() {
+    fun getAllMoviesByName(orderByName: Boolean = true) {
         viewModelScope.launch {
             _stateList.value = MovieState.ShowLoading
-            val response = useCase.getAllMoviesByName()
+            val response = useCase.getAllMoviesByName(orderByName)
             _stateList.value = MovieState.HideLoading
             response.flow(
                 { movies ->

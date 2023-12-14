@@ -23,4 +23,8 @@
     <string name="label_movie_not_watched">Não assistido -</string>
     <string name="label_not_yet_rated">Ainda não avaliado</string>
     <string name="label_detail_score">Nota %1$s</string>
+    <string name="label_order_by">Ordenar por:</string>
+    <string name="label_order_name">Nome</string>
+    <string name="label_order_by_name">Nome</string>
+    <string name="label_order_by_score">Nota</string>
 </resources>
