@@ -8,6 +8,7 @@
     <string name="label_movie_studio">Estúdio ou produtora</string>
     <string name="label_release_year">Ano</string>
     <string name="label_movie_duration">Tempo (em min)</string>
+    <string name="label_movie_duration_in_minutes">Tempo</string>
     <string name="label_watched">Já assistiu?</string>
     <string name="label_movie_score">Nota</string>
     <string name="label_save">Salvar</string>
@@ -18,8 +19,8 @@
     <string name="label_movie_deleted">Filme removido!</string>
     <string name="label_uninformed">Não informado</string>
     <string name="label_x_minutes">%1$s minutos</string>
-    <string name="label_movie_watched">Assistido</string>
-    <string name="label_movie_not_watched">Não assistido</string>
+    <string name="label_movie_watched">Assistido -</string>
+    <string name="label_movie_not_watched">Não assistido -</string>
     <string name="label_not_yet_rated">Ainda não avaliado</string>
     <string name="label_detail_score">Nota %1$s</string>
 </resources>

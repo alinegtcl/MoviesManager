@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.luisitolentino.moviesmanager.R
 import com.luisitolentino.moviesmanager.databinding.FragmentDetailMovieBinding
+import com.luisitolentino.moviesmanager.domain.utils.Constants.EMPTY_STRING
 
 class DetailMovieFragment : Fragment() {
     private var _binding: FragmentDetailMovieBinding? = null
@@ -33,9 +34,12 @@ class DetailMovieFragment : Fragment() {
     private fun setupView() {
         binding.apply {
             textMovieName.text = args.selectedMovie.name
-            textMovieGenreLabel.text = args.selectedMovie.movieGenre
-            textReleaseYear.text = args.selectedMovie.releaseYear
-            textMovieStudio.text = args.selectedMovie.studio
+            textMovieGenre.text = args.selectedMovie.movieGenre
+            textReleaseYear.text = if (args.selectedMovie.releaseYear == EMPTY_STRING)
+                getString(R.string.label_uninformed) else args.selectedMovie.releaseYear
+            textMovieStudio.text =
+                if (args.selectedMovie.studio == EMPTY_STRING) getString(R.string.label_uninformed)
+                else args.selectedMovie.studio
             if (args.selectedMovie.duration > 0)
                 textMovieDuration.text =
                     getString(R.string.label_x_minutes, args.selectedMovie.duration.toString())
