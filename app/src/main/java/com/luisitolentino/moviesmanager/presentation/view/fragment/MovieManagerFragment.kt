@@ -38,11 +38,13 @@ class MovieManagerFragment : Fragment() {
     private var isEdit by Delegates.notNull<Boolean>()
 
     private val movieGenreList = listOf(
+        "Ação",
+        "Aventura",
         "Comédia",
         "Drama",
-        "Terror",
+        "Ficção Científica",
         "Romance",
-        "Aventura"
+        "Terror"
     )
 
     private var name = EMPTY_STRING
